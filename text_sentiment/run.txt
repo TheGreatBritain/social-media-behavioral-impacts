@@ -1,0 +1,3 @@
+nohup python database_connect.py & echo $! > save_pid.txt
+
+kill -9 `cat save_pid.txt`

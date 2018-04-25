@@ -1,0 +1,5 @@
+https://buffalo.app.box.com/api/oauth2/authorize?response_type=code&client_id=jc3cf979lo0u988t1vehi3kjer09g9zq&state=authenticated
+
+nohup python box_connect.py & echo $! > save_pid.txt
+
+kill -9 `cat save_pid.txt`
