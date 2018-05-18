@@ -26,7 +26,7 @@ def box_auth():
 	#print("secret:")
 	#print(CLIENT_SECRET)
 	oauth2 = OAuth2(CLIENT_ID, CLIENT_SECRET)
-	ACCESS_TOKEN, refresh_token = oauth2.authenticate('TRJkA845ociuqSy4wpK2FuacWb8z3YID')
+	ACCESS_TOKEN, refresh_token = oauth2.authenticate('sPYsGLFDczo57A8epBQJkPQWGZB5it7j')
 	#ACCESS_TOKEN = access_token
 	client = Client(oauth2)
 	return client
@@ -55,13 +55,17 @@ def session_emotion(client):
 		emotions = ["neutral", "anger", "contempt", "disgust", "fear", "happy", "sadness", "surprise"]
 		session_emotion_details = [0,0,0,0,0,0,0,0]
 		logging.info("Checking if emotion is ready for the session "+session_id)
-		session_folder_search = client.folder(48663810050).get_items(limit=10000, offset=0)
+		session_folder_search_base = client.folder(0).get_items(limit=10000, offset=0)
+		session_folder_search = None
+		for every_folder in session_folder_search_base:
+			 if every_folder['name'] == "SMBA Image Dumps":
+				 session_folder_search = every_folder.get_items(limit=10000, offset=0)
 		#session_folder_search = client.search(session_id,20,0)
 		selected_folder = None
 		items = None
 		for session_folder in session_folder_search:
 			#logging.info('session_folder from search is '+str(session_folder['name']))
-			if session_folder['name'] == session_id and session_folder.type == 'folder':
+			if session_folder['name'] == "session-"+session_id and session_folder.type == 'folder':
 				selected_folder = session_folder
 		if selected_folder is None:
 			logging.info('Session folder not found yet for session with id'+session_id)
@@ -93,7 +97,7 @@ def session_emotion(client):
 			emotion_ratios = [x / sum(session_emotion_details) for x in session_emotion_details]
 			for i in range(0,len(emotion_ratios)):
 				update_each_cur = db.cursor()
-				update_each_cur.execute("update smba_table_user_session set smba_table_user_session."+emotions[i]+" = "+str(emotion_ratios[i])+"where smba_table_user_session.id = "+str(session_id)+";")
+				update_each_cur.execute("update smba_table_user_session set smba_table_user_session."+emotions[i]+" = "+str(emotion_ratios[i]*100)+"where smba_table_user_session.id = "+str(session_id)+";")
 				logging.info('adding ratio of  each emotion occurance')
 				
 		else:
