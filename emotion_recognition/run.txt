@@ -1,3 +1,12 @@
+ ## Only run the first 2 steps if the program is running on a UB CS server:
+ virtualenv --system-site-packages mysql_env
+ source mysql_env/bin/activate.csh
+ ## Common steps:
+ cd ~/smba/emotion_recognition/
+ pip install -r requirements.txt
+ Try running : python box_connect.py
+
+
 https://buffalo.app.box.com/api/oauth2/authorize?response_type=code&client_id=jc3cf979lo0u988t1vehi3kjer09g9zq&state=authenticated
 
 nohup python box_connect.py & echo $! > save_pid.txt

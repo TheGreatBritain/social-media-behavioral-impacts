@@ -3,6 +3,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk import tokenize
 import sys
 import logging
+from __future__ import print_function
 
 def sentiment_with_vader(sentence):
     sentiment_analyzer = SentimentIntensityAnalyzer()
